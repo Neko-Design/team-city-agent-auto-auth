@@ -199,7 +199,7 @@
   
   <target name="clean" depends="clean.module.server" description="cleanup all"/>
   
-  <target name="build.modules" depends="init, clean, compile.module.server" description="build all modules"/>
+  <target name="build.modules" depends="init, compile.module.server" description="build all modules"/>
   
   <target name="all" depends="build.modules" description="build all"/>
 </project>
