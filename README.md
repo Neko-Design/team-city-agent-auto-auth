@@ -15,6 +15,6 @@ NOTE: Because this plugin circumvents the manual agent authorization step which 
 
 1. Upload `AutoAuthorize.zip` to your TeamCity plugin directory. (If you're doing this through the UI, you can find it at https://your-teamcity/admin/admin.html?item=plugins)
 2. Restart your TeamCity server
-3. Add the following to your agent properties (located at `$agentDir/conf/buildAgent.properties`): `auto_authorize=true`
+3. Add the following to your agent properties (located at `$agentDir/conf/buildAgent.properties`): `auto_deregister=true` if you would like to de-authorise on disconnect.
 4. Start your build agent
 5. Note that as soon as it's registered, it will also be authorized.
