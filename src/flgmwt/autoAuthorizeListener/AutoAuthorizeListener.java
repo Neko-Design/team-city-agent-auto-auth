@@ -26,31 +26,33 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Authorizes agents as soon as they're registered
+ *
+ * CHANGELOG
+ * Updated 1/05/2017 by Neko-Design
+ *   - Removed Requirement to Flag Agents
+ *   - Changed Flag to Auto Disconnect Agents
  */
 public class AutoAuthorizeListener extends BuildServerAdapter {
-  private final SBuildServer myBuildServer;
+    private final SBuildServer myBuildServer;
 
-  public AutoAuthorizeListener(SBuildServer sBuildServer) {
-    myBuildServer = sBuildServer;
-  }
-
-  public void register() {
-    myBuildServer.addListener(this);
-  }
-
-  @Override
-  public void agentRegistered(@NotNull SBuildAgent sBuildAgent, long l) {
-    Map<String,String> parameters = sBuildAgent.getAvailableParameters();
-    if (parameters.containsKey("auto_authorize") && parameters.get("auto_authorize").equals("true")) {
-      sBuildAgent.setAuthorized(true, null, "ASG agent registered");
+    public AutoAuthorizeListener(SBuildServer sBuildServer) {
+        myBuildServer = sBuildServer;
     }
-  }
 
-  @Override
-  public void agentUnregistered(@NotNull SBuildAgent sBuildAgent) {
-    Map<String,String> parameters = sBuildAgent.getAvailableParameters();
-    if (parameters.containsKey("auto_authorize") && parameters.get("auto_authorize").equals("true")) {
-      sBuildAgent.setAuthorized(false, null, "ASG agent unregistered");
+    public void register() {
+        myBuildServer.addListener(this);
     }
-  }
+
+    @Override
+    public void agentRegistered(@NotNull SBuildAgent sBuildAgent, long l) {
+        sBuildAgent.setAuthorized(true, null, "Dynamic Agent Connected");
+    }
+
+    @Override
+    public void agentUnregistered(@NotNull SBuildAgent sBuildAgent) {
+        Map<String,String> parameters = sBuildAgent.getAvailableParameters();
+        if (parameters.containsKey("auto_deregister") && parameters.get("auto_deregister").equals("true")) {
+            sBuildAgent.setAuthorized(false, null, "Dynamic Agent Disconnected");
+        }
+    }
 }
